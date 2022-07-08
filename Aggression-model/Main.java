@@ -1,9 +1,10 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 public class Main {
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args){
         //initialisation
         List<Food> foodList = new ArrayList<Food>();
         List<Blob> blobList = new ArrayList<Blob>();
@@ -14,26 +15,44 @@ public class Main {
                 blobList.add(new Blob());
             }
         }
-
+        System.out.println("food: " + foodList.size() + ", blobs: " + blobList.size());
         //execution
         int counter = 0;
         while (counter < 5){ // maybe add a criteria to check that the number of blobs is smaller than the number of food * 2
             //reset round
             ClearRelationships(blobList, foodList);
             AssignFood(blobList, foodList);
+            System.out.println("food: " + foodList.size() + ", blobs: " + blobList.size());
+            
 
             // start round
-            for (Food food : foodList) {
-                if(food.getNumberOfOccupiers() > 0){
-                    // perform calculation
+            for (Food meal : foodList) {
+                switch (meal.getNumberOfOccupiers()){
+                    case 0:
+                        continue;
+                    case 1:
+                        // there is 1 blob for 2 food
+                        blobList.add(new Blob()); // could at a parent feature
+                    case 2:
+                        // 
                 }
             }
+
+            // kill off the zero food dudes
+            Iterator i = blobList.iterator();
+            while(i.hasNext()){
+                Blob blob = (Blob) i.next();
+                if(blob.getMeal() == null){
+                    i.remove();
+                }
+            }
+
+            System.out.println("number of blobs: " + blobList.size());
             counter++;
         } 
-
     }
 
-    public static void AssignFood(List<Blob> blobs, List<Food> food) throws Exception{
+    public static void AssignFood(List<Blob> blobs, List<Food> food){
         var availableFood = food;
         Random rand = new Random();
         for (Blob blob : blobs) {
@@ -46,7 +65,7 @@ public class Main {
         }
     }
 
-    public static void ClearRelationships(List<Blob> blobs, List<Food> food) throws Exception{
+    public static void ClearRelationships(List<Blob> blobs, List<Food> food){
         for (Food meal : food) {
             meal.clearOccupiers();
         }

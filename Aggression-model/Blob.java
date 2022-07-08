@@ -2,18 +2,18 @@ public class Blob {
     
     private Food Meal;
 
-    public boolean setMeal(Food meal) throws Exception{
+    public boolean setMeal(Food meal) {
         if (Meal != null){
             Meal = meal;
-            if (this.Meal.addOccupier(this) == false){
-                throw new Exception();
-            }
-            return true;
+            return this.Meal.addOccupier(this);
         } else {
             return false;
         }
     }
 
+    public Food getMeal(){
+        return this.Meal;
+    }
     public void clearMeal(){
         this.Meal = null;
     }
